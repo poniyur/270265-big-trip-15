@@ -6,7 +6,7 @@ const COUNT = 20;
 
 // trip/point options
 let pointId = 0;
-const nextPointDate = dayjs().add(getRandomPositiveInt(10), 'day');
+let nextPointDate = dayjs().add(getRandomPositiveInt(10), 'day');
 const TRIP_TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 const DESTIONATIONS = ['Harrington Park', 'Atmore', 'Halsey', 'Bylas', 'North Mankato', 'Newburyport', 'Juliaetta', 'Oketo', 'Luray', 'Sailor Springs', 'Teton Village', 'Ponemah', 'Arden', 'Minorca', 'Boulder', 'Little Valley', 'Candlewood Lake', 'Grand Coteau', 'Tupelo', 'Wiggins', 'Marlette', 'Riverland', 'Haiku', 'Fleetwood', 'Joy', 'Judson', 'Belen', 'Weigelstown', 'New Braunfels', 'Neck City', 'Port Vincent', 'Ellisburg', 'Onida', 'Baumstown', 'Huguley', 'Jenkinsburg', 'Roseboro', 'Obion', 'Missouri City', 'Marco Island', 'Hope', 'Smithers', 'Highland Heights', 'Salt Creek', 'Baidland', 'Gulf Park Estates', 'Oakes', 'Greenland', 'Seaside', 'Williston Park'];
 
@@ -23,6 +23,8 @@ const OFFER_TYPES = {
   'Sightseeing': ['Book tickets', 'Lunch in city', 'Offer 3', 'Offer 5', 'Offer 6'],
   'Restaurant': ['Cook with Gordon Ramsi', 'Dine on the veranda', 'Offer 3', 'Offer 4'],
 };
+
+const fishText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.';
 
 
 // funcs
@@ -43,6 +45,7 @@ const generateOfferList = (type) => {
     list.push({
       title,
       price: getRandomPositiveInt(25) * 10,
+      isChecked: Math.random() > 0.5,
     });
   }
 
@@ -52,10 +55,34 @@ const generateOfferList = (type) => {
 const getPointDates = () => {
   const dates = [];
   dates.push(nextPointDate.clone());
-  dates.push(nextPointDate.add(getRandomPositiveInt(120), 'm').clone());
+  nextPointDate = nextPointDate.add(getRandomPositiveInt(120), 'm');
+  dates.push(nextPointDate.clone());
 
-  nextPointDate.add(getRandomPositiveInt(200), 'm');
+  nextPointDate = nextPointDate.add(getRandomPositiveInt(30), 'm');
   return dates;
+};
+
+const getDescription = () => {
+
+  const text = [];
+  const list = fishText.split('. ');
+  let count = getRandomPositiveInt(5);
+  while( count-- ) {
+    text.push(getRandomValueFromArray(list));
+  }
+  text.push('');
+
+  return text.join('. ');
+};
+
+const getPhotos = () => {
+
+  const photos = [];
+  let count = getRandomPositiveInt(4);
+  while( count-- ) {
+    photos.push(`http://picsum.photos/248/152?r=${Math.random()}`);
+  }
+  return photos;
 };
 
 // const generatePointDates
@@ -68,11 +95,13 @@ const generatePoint = () => {
     id: ++pointId,
     type,
     destination: getRandomValueFromArray(DESTIONATIONS),
-    basePrice: getRandomPositiveInt(200) * 10,
+    basePrice: getRandomPositiveInt(20) * 10,
     dateFrom: dates[0],
     dateTo: dates[1],
-    isFavorite: Math.random() < 0.75,
+    isFavorite: Math.random() > 0.75,
     offers: generateOfferList(type),
+    description: getDescription(),
+    photos: getPhotos(),
   };
 
   return point;

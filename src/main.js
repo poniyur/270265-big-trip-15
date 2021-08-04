@@ -1,14 +1,10 @@
 import { createNavigationTemplate } from './views/navigation.js';
 import { createFilterTemplate } from './views/filter.js';
-import { createTripInfoTemplate } from './views/trip-info.js';
+import { renderTripInfo } from './views/trip-info.js';
 import { createSortTemplate } from './views/sort.js';
-import { createTripListTemplate } from './views/trip-list.js';
-// import { createTripAddTemplate } from './views/trip-add.js';
-// import { createTripEditTemplate } from './views/trip-edit.js';
-// import { createStatTemplate } from './view/trip-edit.js';
-// import { generatePointList } from './services/generator.js';
-
-// console.log(generatePointList());
+import { render as renderPoints } from './views/point-list.js';
+import { renderEditPoint } from './views/point-edit.js';
+import { generatePointList } from './services/generator.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -20,17 +16,19 @@ const renderEnd = (container, template) => render(container, template, 'beforeen
 const tripMainContainer = document.querySelector('.trip-main');
 const navContainer = tripMainContainer.querySelector('.trip-controls__navigation');
 const filterContainer = tripMainContainer.querySelector('.trip-controls__filters');
-
 const siteMainElement = document.querySelector('.page-main');
 const tripsContainer = siteMainElement.querySelector('.trip-events');
 
-renderStart( tripMainContainer, createTripInfoTemplate() );
+
+const points = generatePointList();
+
+renderStart( tripMainContainer, renderTripInfo(points) );
 renderEnd( navContainer, createNavigationTemplate() );
 renderEnd( filterContainer, createFilterTemplate() );
 renderStart( tripsContainer, createSortTemplate() );
-renderEnd( tripsContainer, createTripListTemplate() );
 
+const firstPoint = points.shift();
+renderEnd( tripsContainer, renderPoints(points) );
 
-// const tripsListContainer = tripsContainer.querySelector('.trip-events__list');
-// renderStart( tripsListContainer, createTripEditTemplate() );
-// renderStart( tripsListContainer, createTripAddTemplate() );
+const tripsListContainer = tripsContainer.querySelector('.trip-events__list');
+renderStart( tripsListContainer, renderEditPoint(firstPoint) );
