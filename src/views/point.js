@@ -6,15 +6,9 @@ const getViewTime = (dayjsDate) => {
   const step = 5;
   const offset = minutes % step;
 
-  let viewDate = null;
+  const roundedMinutes = (offset >= step/2) ? minutes + step - offset : minutes - offset;
 
-  if( offset >= step/2  ) {
-    viewDate = dayjsDate.minute(minutes + step - offset);
-  } else {
-    viewDate = dayjsDate.minute(minutes - offset);
-  }
-
-  return viewDate;
+  return dayjsDate.minute(roundedMinutes);
 };
 
 const getViewDuration = (diffInMunutes) => {
@@ -22,14 +16,9 @@ const getViewDuration = (diffInMunutes) => {
   const durationHours = Math.floor(diffInMunutes / 60);
   const durationMinutes = diffInMunutes - 60 * durationHours;
 
-  let viewDuration = '';
-  if( durationHours > 0 ) {
-    viewDuration = `${durationHours}H ${durationMinutes}M`;
-  } else {
-    viewDuration = `${durationMinutes}M`;
-  }
-
-  return viewDuration;
+  return durationHours > 0 ?
+    `${durationHours}H ${durationMinutes}M`
+    : `${durationMinutes}M`;
 };
 
 const getViewOffers = (offers) => {

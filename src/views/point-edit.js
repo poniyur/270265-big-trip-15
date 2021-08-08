@@ -66,7 +66,7 @@ const renderOffersSection = (offers) => {
   offers.forEach((offer) => {
     const html = /*html*/`
       <div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" ${offer.isChecked ? 'checked' : ''}>
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-${offer.id}" type="checkbox" name="event-offer-comfort" ${offer.isChecked ? 'checked' : ''}>
         <label class="event__offer-label" for="event-offer-comfort-1">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;

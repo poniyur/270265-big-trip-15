@@ -19,14 +19,12 @@ const renderTripInfo = (points) => {
 
   if(points) {
     points.forEach((point) => {
-      if( destinations[length.destinations - 1] !== point.destination ) {
-        destinations.push(point.destination);
-      }
       total += point.basePrice + getOffersSum(point.offers);
     });
 
     const endPoint = points.pop();
     finishDate = endPoint.dateTo;
+    destinations.push(endPoint.destination);
   }
 
   const title = destinations.join(' &mdash; ');
@@ -39,11 +37,8 @@ const renderTripInfo = (points) => {
     : true;
 
   if( finishDate && !sameDay) {
-    if( finishDate.month() === startDate.month() ) {
-      viewDate += `&nbsp;&mdash;&nbsp;${finishDate.format('DD')}`;
-    } else {
-      viewDate += `&nbsp;&mdash;&nbsp;${finishDate.format('MMM DD')}`;
-    }
+    const viewFormat = finishDate.month() === startDate.month() ? 'DD' : 'MMM DD';
+    viewDate += `&nbsp;&mdash;&nbsp;${finishDate.format(viewFormat)}`;
   }
 
   return /*html*/`
