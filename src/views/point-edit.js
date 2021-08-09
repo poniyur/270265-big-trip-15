@@ -1,4 +1,5 @@
 import {getIconSrc} from '../services/point-helper.js';
+import { createElement } from '../services/utils.js';
 
 const renderEventTypeList = () => `
   <div class="event__type-list">
@@ -89,7 +90,7 @@ const renderOffersSection = (offers) => {
   `;
 };
 
-const renderEditPoint = (point) => /*html*/`
+const getPointEditTemplate = (point) =>/*html*/`
   <li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
       <header class="event__header">
@@ -151,4 +152,24 @@ const renderEditPoint = (point) => /*html*/`
   </li>
 `;
 
-export {renderEditPoint};
+export default class PointEdit {
+  constructor(point) {
+    this._data = {point};
+    this._element = null;
+  }
+
+  getTemplate() {
+    return getPointEditTemplate(this._data.point);
+  }
+
+  getElement() {
+    if( !this._element ) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

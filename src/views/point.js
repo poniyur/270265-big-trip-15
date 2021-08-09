@@ -1,3 +1,4 @@
+import { createElement } from '../services/utils.js';
 import {getIconSrc} from '../services/point-helper.js';
 
 const getViewTime = (dayjsDate) => {
@@ -43,7 +44,7 @@ const getViewOffers = (offers) => {
   return html.join('\n');
 };
 
-const render = (point) => {
+const getPointTemplate = (point) => {
   const viewDateFrom = getViewTime(point.dateFrom);
   const viewDateTo = getViewTime(point.dateTo);
   const viewDuration = getViewDuration(viewDateTo.diff(viewDateFrom, 'm'));
@@ -87,5 +88,24 @@ const render = (point) => {
   `;
 };
 
+export default class Point {
+  constructor(point) {
+    this._data = {point};
+    this._element = null;
+  }
 
-export {render};
+  getTemplate() {
+    return getPointTemplate(this._data.point);
+  }
+
+  getElement() {
+    if( !this._element ) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,19 +1,29 @@
-import {render as renderPoint} from './point.js';
+import { createElement } from '../services/utils.js';
 
-const render = (points) => {
+const getPointListTemplate = () =>/*html*/`
+  <ul class="trip-events__list">
+  </ul>
+`;
 
-  const htmlPoints = [];
-  points.forEach((point) => {
-    htmlPoints.push(renderPoint(point));
-  });
+export default class PointList {
+  constructor() {
+    this._element = null;
+  }
 
-  return `
-    <ul class="trip-events__list">
-      ${htmlPoints.join('\n')}
-    </ul>
-  `;
-};
+  getTemplate() {
+    return getPointListTemplate();
+  }
 
-export {render};
+  getElement() {
+    if( !this._element ) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 
 
