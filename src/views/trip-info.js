@@ -1,3 +1,19 @@
+import { createElement } from '../services/utils.js';
+
+const getTripInfoTemplate = (data) => /*html*/`
+  <section class="trip-main__trip-info  trip-info">
+    <div class="trip-info__main">
+      <h1 class="trip-info__title">${data.title}</h1>
+
+      <p class="trip-info__dates">${data.viewDate}</p>
+    </div>
+
+    <p class="trip-info__cost">
+      Total: &euro;&nbsp;<span class="trip-info__cost-value">${data.total}</span>
+    </p>
+  </section>
+`;
+
 const getOffersSum = (offers) => {
   let sum = 0;
   offers.forEach((offer) => {
@@ -8,8 +24,7 @@ const getOffersSum = (offers) => {
   return sum;
 };
 
-const renderTripInfo = (points) => {
-
+const calculateDataFromPoints = (points) => {
   const startPoint = points.shift();
 
   const destinations = [startPoint.destination];
@@ -41,23 +56,29 @@ const renderTripInfo = (points) => {
     viewDate += `&nbsp;&mdash;&nbsp;${finishDate.format(viewFormat)}`;
   }
 
-  return /*html*/`
-    <section class="trip-main__trip-info  trip-info">
-      <div class="trip-info__main">
-        <h1 class="trip-info__title">${title}</h1>
-
-        <p class="trip-info__dates">${viewDate}</p>
-      </div>
-
-      <p class="trip-info__cost">
-        Total: &euro;&nbsp;<span class="trip-info__cost-value">${total}</span>
-      </p>
-    </section>
-  `;
-
-
+  return {title, viewDate, total};
 };
 
-export {renderTripInfo};
 
+export default class TripInfo {
+  constructor(points) {
+    const data = calculateDataFromPoints(points);
+    this._data = {data};
+    this._element = null;
+  }
 
+  getTemplate() {
+    return getTripInfoTemplate(this._data.data);
+  }
+
+  getElement() {
+    if( !this._element ) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
