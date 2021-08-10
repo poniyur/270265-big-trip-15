@@ -22,12 +22,23 @@ render( navContainer, new NavigationView().getElement(), RenderPosition.BEFOREEN
 render( filterContainer, new FilterView().getElement(), RenderPosition.BEFOREEND );
 render( tripsContainer, new SortView().getElement(), RenderPosition.AFTERBEGIN );
 
-const firstPoint = points.shift();
-render( tripsContainer, new PointListView().getElement(), RenderPosition.BEFOREEND );
+const pointListComponent = new PointListView();
+render( tripsContainer, pointListComponent.getElement(), RenderPosition.BEFOREEND );
 const pointsContainer = tripsContainer.querySelector('.trip-events__list');
 
 points.forEach((point) => {
-  render( pointsContainer, new PointView(point).getElement(), RenderPosition.AFTERBEGIN );
+  const pointComponent = new PointView(point);
+  const pointEditComponent = new EditPointView(point);
+
+  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointListComponent.getElement().replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
+  });
+
+  pointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointListComponent.getElement().replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
+  });
+
+  render( pointsContainer, pointComponent.getElement(), RenderPosition.AFTERBEGIN );
 });
 
-render( pointsContainer, new EditPointView(firstPoint).getElement(), RenderPosition.AFTERBEGIN );
+

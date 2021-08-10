@@ -62,7 +62,8 @@ const calculateDataFromPoints = (points) => {
 
 export default class TripInfo {
   constructor(points) {
-    this._data.data = calculateDataFromPoints(points);
+    const data = calculateDataFromPoints(points);
+    this._data = {data};
     this._element = null;
   }
 
