@@ -1,5 +1,5 @@
-import { createElement } from '../services/utils.js';
 import {getIconSrc} from '../services/point-helper.js';
+import View from '../mvp/view.js';
 
 const getViewTime = (dayjsDate) => {
 
@@ -88,24 +88,13 @@ const getPointTemplate = (point) => {
   `;
 };
 
-export default class Point {
+export default class Point extends View {
   constructor(point) {
-    this._data = {point};
-    this._element = null;
+    super();
+    this._point = point;
   }
 
   getTemplate() {
-    return getPointTemplate(this._data.point);
-  }
-
-  getElement() {
-    if( !this._element ) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    return getPointTemplate(this._point);
   }
 }

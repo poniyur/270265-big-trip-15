@@ -1,4 +1,4 @@
-import { createElement } from '../services/utils.js';
+import View from '../mvp/view.js';
 
 const getTripInfoTemplate = (data) => /*html*/`
   <section class="trip-main__trip-info  trip-info">
@@ -60,25 +60,15 @@ const calculateDataFromPoints = (points) => {
 };
 
 
-export default class TripInfo {
+export default class TripInfo extends View {
+
   constructor(points) {
-    const data = calculateDataFromPoints(points);
-    this._data = {data};
-    this._element = null;
+    super();
+    this._data = calculateDataFromPoints(points);
   }
 
   getTemplate() {
-    return getTripInfoTemplate(this._data.data);
+    return getTripInfoTemplate(this._data);
   }
 
-  getElement() {
-    if( !this._element ) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

@@ -1,5 +1,5 @@
+import View from '../mvp/view.js';
 import {getIconSrc} from '../services/point-helper.js';
-import { createElement } from '../services/utils.js';
 
 const renderEventTypeList = () => `
   <div class="event__type-list">
@@ -152,24 +152,15 @@ const getPointEditTemplate = (point) =>/*html*/`
   </li>
 `;
 
-export default class PointEdit {
+export default class PointEdit extends View {
+
   constructor(point) {
-    this._data = {point};
-    this._element = null;
+    super();
+    this._point = point;
   }
 
   getTemplate() {
-    return getPointEditTemplate(this._data.point);
+    return getPointEditTemplate(this._point);
   }
 
-  getElement() {
-    if( !this._element ) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }
