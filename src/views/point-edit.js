@@ -157,10 +157,23 @@ export default class PointEdit extends View {
   constructor(point) {
     super();
     this._point = point;
+    this._toggleClickHandler = this._toggleClickHandler.bind(this);
   }
 
   getTemplate() {
     return getPointEditTemplate(this._point);
+  }
+
+  _toggleClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.toggle();
+  }
+
+  setToggleClickHandler(callback) {
+    this._callback.toggle = callback;
+    this.getElement()
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this._toggleClickHandler);
   }
 
 }

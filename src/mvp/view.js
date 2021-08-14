@@ -8,6 +8,7 @@ export default class View {
     }
 
     this._element = null;
+    this._callback = {};
   }
 
   getTemplate() {

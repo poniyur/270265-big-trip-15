@@ -7,7 +7,7 @@ import NavigationView from './views/navigation.js';
 import SortView from './views/sort.js';
 import PointListView from './views/point-list.js';
 import PointView from './views/point.js';
-import EditPointView from './views/point-edit.js';
+import PointEditView from './views/point-edit.js';
 
 const tripMainContainer = document.querySelector('.trip-main');
 const navContainer = tripMainContainer.querySelector('.trip-controls__navigation');
@@ -28,15 +28,10 @@ const pointsContainer = tripsContainer.querySelector('.trip-events__list');
 
 points.forEach((point) => {
   const pointComponent = new PointView(point);
-  const pointEditComponent = new EditPointView(point);
+  const pointEditComponent = new PointEditView(point);
 
-  pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
-    pointListComponent.getElement().replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
-  });
-
-  pointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
-    pointListComponent.getElement().replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
-  });
+  pointComponent.setEditClickHandler(() => pointListComponent.getElement().replaceChild(pointEditComponent.getElement(), pointComponent.getElement()));
+  pointEditComponent.setToggleClickHandler(() => pointListComponent.getElement().replaceChild(pointComponent.getElement(), pointEditComponent.getElement()));
 
   render( pointsContainer, pointComponent.getElement(), RenderPosition.AFTERBEGIN );
 });
