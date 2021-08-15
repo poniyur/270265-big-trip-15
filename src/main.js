@@ -1,5 +1,5 @@
 import { generatePointList } from './services/generator.js';
-import {render, RenderPosition} from './services/utils.js';
+import {render, replace, RenderPosition} from './services/render.js';
 
 import TripInfoView from './views/trip-info.js';
 import FilterView from './views/filter.js';
@@ -17,23 +17,23 @@ const tripsContainer = siteMainElement.querySelector('.trip-events');
 
 const points = generatePointList();
 
-render( tripMainContainer, new TripInfoView(points).getElement(), RenderPosition.AFTERBEGIN );
-render( navContainer, new NavigationView().getElement(), RenderPosition.BEFOREEND );
-render( filterContainer, new FilterView().getElement(), RenderPosition.BEFOREEND );
-render( tripsContainer, new SortView().getElement(), RenderPosition.AFTERBEGIN );
+render( tripMainContainer, new TripInfoView(points), RenderPosition.AFTERBEGIN );
+render( navContainer, new NavigationView(), RenderPosition.BEFOREEND );
+render( filterContainer, new FilterView(), RenderPosition.BEFOREEND );
+render( tripsContainer, new SortView(), RenderPosition.AFTERBEGIN );
 
 const pointListComponent = new PointListView();
-render( tripsContainer, pointListComponent.getElement(), RenderPosition.BEFOREEND );
+render( tripsContainer, pointListComponent, RenderPosition.BEFOREEND );
 const pointsContainer = tripsContainer.querySelector('.trip-events__list');
 
 points.forEach((point) => {
   const pointComponent = new PointView(point);
   const pointEditComponent = new PointEditView(point);
 
-  pointComponent.setEditClickHandler(() => pointListComponent.getElement().replaceChild(pointEditComponent.getElement(), pointComponent.getElement()));
-  pointEditComponent.setToggleClickHandler(() => pointListComponent.getElement().replaceChild(pointComponent.getElement(), pointEditComponent.getElement()));
+  pointComponent.setEditClickHandler(() => replace(pointEditComponent, pointComponent));
+  pointEditComponent.setToggleClickHandler(() => replace(pointComponent, pointEditComponent));
 
-  render( pointsContainer, pointComponent.getElement(), RenderPosition.AFTERBEGIN );
+  render( pointsContainer, pointComponent, RenderPosition.AFTERBEGIN );
 });
 
 
