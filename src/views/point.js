@@ -1,5 +1,5 @@
-import { createElement } from '../services/utils.js';
 import {getIconSrc} from '../services/point-helper.js';
+import View from '../mvp/view.js';
 
 const getViewTime = (dayjsDate) => {
 
@@ -88,24 +88,26 @@ const getPointTemplate = (point) => {
   `;
 };
 
-export default class Point {
+export default class Point extends View {
   constructor(point) {
-    this._data = {point};
-    this._element = null;
+    super();
+    this._point = point;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
-    return getPointTemplate(this._data.point);
+    return getPointTemplate(this._point);
   }
 
-  getElement() {
-    if( !this._element ) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement()
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this._editClickHandler);
   }
 }

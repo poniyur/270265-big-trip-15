@@ -1,25 +1,3 @@
-export const RenderPosition = {
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-};
-
-export const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
-export const createElement = (htmlString) => {
-  const div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
-};
-
 export const getRandomValueFromArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 export const getRandomInt = (min, max) => {

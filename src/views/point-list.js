@@ -1,29 +1,16 @@
-import { createElement } from '../services/utils.js';
+import View from '../mvp/view.js';
 
 const getPointListTemplate = () =>/*html*/`
   <ul class="trip-events__list">
   </ul>
 `;
 
-export default class PointList {
-  constructor() {
-    this._element = null;
-  }
+export default class PointList extends View {
 
   getTemplate() {
     return getPointListTemplate();
   }
 
-  getElement() {
-    if( !this._element ) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }
 
 
