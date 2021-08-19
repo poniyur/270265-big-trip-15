@@ -3,10 +3,9 @@ import FilterView from '../views/filter.js';
 import NavigationView from '../views/navigation.js';
 import SortView from '../views/sort.js';
 import PointListView from '../views/point-list.js';
-import PointView from '../views/point.js';
-import PointEditView from '../views/point-edit.js';
+import PointPresenter from './point.js';
 
-import {render, replace, RenderPosition} from '../services/render.js';
+import {render, RenderPosition} from '../services/render.js';
 
 export default class Trip {
 
@@ -18,7 +17,6 @@ export default class Trip {
     this._filterContainer = this._headerContainer.querySelector('.trip-controls__filters');
 
     this._bodyContainer = options.bodyContainer;
-
 
     this._infoComponent = new TripInfoView(this._points);
     this._navigationComponent = new NavigationView();
@@ -55,13 +53,13 @@ export default class Trip {
   }
 
   _renderPoint(point) {
-    const pointComponent = new PointView(point);
-    const pointEditComponent = new PointEditView(point);
 
-    pointComponent.setEditClickHandler(() => replace(pointEditComponent, pointComponent));
-    pointEditComponent.setToggleClickHandler(() => replace(pointComponent, pointEditComponent));
+    const pointPresenter = new PointPresenter({
+      container: this._pointListComponent,
+      data: point,
+    });
 
-    render( this._pointListComponent, pointComponent, RenderPosition.AFTERBEGIN );
+    pointPresenter.run();
   }
 
   _renderMain() {
