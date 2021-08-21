@@ -10,23 +10,31 @@ import {render, RenderPosition} from '../services/render.js';
 export default class Trip {
 
   constructor(options) {
-    this._points = options.points.slice();
-
+    this._pointMap = options.points.reduce((acc, point) => acc.set(point.id, point), new Map());
     this._headerContainer = options.headerContainer;
     this._navigationContainer = this._headerContainer.querySelector('.trip-controls__navigation');
     this._filterContainer = this._headerContainer.querySelector('.trip-controls__filters');
 
     this._bodyContainer = options.bodyContainer;
 
-    this._infoComponent = new TripInfoView(this._points);
+    this._infoComponent = new TripInfoView(Array.from(this._pointMap.values()));
     this._navigationComponent = new NavigationView();
     this._filterComponent = new FilterView();
     this._sortComponent = new SortView();
     this._pointListComponent = new PointListView();
+
+    this._pointPresenterMap = new Map();
+
+    this._handlePointChange = this._handlePointChange.bind(this);
   }
 
   run() {
     this._renderMain();
+  }
+
+  _handlePointChange(updatedPoint) {
+    this._pointMap.set(updatedPoint.id, updatedPoint);
+    this._pointPresenterMap.get(updatedPoint.id).run();
   }
 
   _renderInfo() {
@@ -47,19 +55,25 @@ export default class Trip {
 
   _renderPointList() {
     render( this._bodyContainer, this._pointListComponent, RenderPosition.BEFOREEND );
-    this._points.forEach((point) => {
+    this._pointMap.forEach((point) => {
       this._renderPoint(point);
     });
   }
 
-  _renderPoint(point) {
+  _clearPointList() {
+    this._pointPresenterMap.forEach((presenter) => presenter.destroy());
+    this._pointPresenterMap.clear();
+  }
 
+  _renderPoint(point) {
     const pointPresenter = new PointPresenter({
       container: this._pointListComponent,
       data: point,
+      change: this._handlePointChange,
     });
 
     pointPresenter.run();
+    this._pointPresenterMap.set(point.id, pointPresenter);
   }
 
   _renderMain() {
