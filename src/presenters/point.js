@@ -16,6 +16,7 @@ export default class Point {
     this._data = options.data;
     this._container = options.container;
     this._change = options.change;
+    this._changeState = options.changeState;
 
     this._state = STATE.DEFAULT;
     this._component = null;
@@ -31,10 +32,10 @@ export default class Point {
     const prevEditComponent = this._editComponent;
 
     this._component = new PointView(this._data);
+    this._editComponent = new PointEditView(this._data);
+
     this._component.setToggleClickHandler(this._handleToggleClick);
     this._component.setFavoriteClickHandler(this._handleFavoriteClick);
-
-    this._editComponent = new PointEditView(this._data);
     this._editComponent.setToggleClickHandler(this._handleToggleClick);
 
     if( prevComponent === null || prevEditComponent === null ) {
@@ -54,6 +55,7 @@ export default class Point {
 
   _handleToggleClick() {
     if( this._state === STATE.DEFAULT ) {
+      this._changeState();
       this._state = STATE.EDIT;
       replace(this._editComponent, this._component);
     } else {
@@ -65,6 +67,13 @@ export default class Point {
   _handleFavoriteClick() {
     this._data.isFavorite = !this._data.isFavorite;
     this._change(this._data);
+  }
+
+  resetView() {
+    if (this._state !== STATE.DEFAULT) {
+      replace(this._component, this._editComponent);
+      this._state = STATE.DEFAULT;
+    }
   }
 
   destroy() {

@@ -26,6 +26,8 @@ export default class Trip {
     this._pointPresenterMap = new Map();
 
     this._handlePointChange = this._handlePointChange.bind(this);
+    this._handleStateChange = this._handleStateChange.bind(this);
+
   }
 
   run() {
@@ -35,6 +37,10 @@ export default class Trip {
   _handlePointChange(updatedPoint) {
     this._pointMap.set(updatedPoint.id, updatedPoint);
     this._pointPresenterMap.get(updatedPoint.id).run();
+  }
+
+  _handleStateChange() {
+    this._pointPresenterMap.forEach((presenter) => presenter.resetView());
   }
 
   _renderInfo() {
@@ -70,6 +76,7 @@ export default class Trip {
       container: this._pointListComponent,
       data: point,
       change: this._handlePointChange,
+      changeState: this._handleStateChange,
     });
 
     pointPresenter.run();
