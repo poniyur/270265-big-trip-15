@@ -92,22 +92,35 @@ export default class Point extends View {
   constructor(point) {
     super();
     this._point = point;
-    this._editClickHandler = this._editClickHandler.bind(this);
+    this._toggleClickHandler = this._toggleClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
     return getPointTemplate(this._point);
   }
 
-  _editClickHandler(evt) {
+  _toggleClickHandler(evt) {
     evt.preventDefault();
     this._callback.editClick();
   }
 
-  setEditClickHandler(callback) {
+  setToggleClickHandler(callback) {
     this._callback.editClick = callback;
     this.getElement()
       .querySelector('.event__rollup-btn')
-      .addEventListener('click', this._editClickHandler);
+      .addEventListener('click', this._toggleClickHandler);
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement()
+      .querySelector('.event__favorite-btn')
+      .addEventListener('click', this._favoriteClickHandler);
   }
 }
