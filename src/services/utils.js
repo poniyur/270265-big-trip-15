@@ -12,3 +12,14 @@ export const shuffleArray = (arr) => {
   const randomSortFunc = () => Math.random() - 0.5;
   return arr.sort(randomSortFunc);
 };
+
+
+export const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+

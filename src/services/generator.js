@@ -1,20 +1,17 @@
 import { getRandomValueFromArray, getRandomPositiveInt } from './utils.js';
-import { getOffersByType } from './point-helper';
+import { getOffersByType, DESTINATIONS, TRIP_TYPES } from './point-helper';
 import dayjs from 'dayjs';
 
 // options
-const COUNT = 2;
+const COUNT = 10;
 const PHOTO_COUNT = 4;
 const DESCRIPTION_LENGTH = 5;
 
 // trip/point options
 let pointId = 0;
 let nextPointDate = dayjs().add(getRandomPositiveInt(10), 'day');
-const TRIP_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
-const DESTINATIONS = ['Harrington Park', 'Atmore', 'Halsey', 'Bylas', 'North Mankato', 'Newburyport', 'Juliaetta', 'Oketo', 'Luray', 'Sailor Springs', 'Teton Village', 'Ponemah', 'Arden', 'Minorca', 'Boulder', 'Little Valley', 'Candlewood Lake', 'Grand Coteau', 'Tupelo', 'Wiggins', 'Marlette', 'Riverland', 'Haiku', 'Fleetwood', 'Joy', 'Judson', 'Belen', 'Weigelstown', 'New Braunfels', 'Neck City', 'Port Vincent', 'Ellisburg', 'Onida', 'Baumstown', 'Huguley', 'Jenkinsburg', 'Roseboro', 'Obion', 'Missouri City', 'Marco Island', 'Hope', 'Smithers', 'Highland Heights', 'Salt Creek', 'Baidland', 'Gulf Park Estates', 'Oakes', 'Greenland', 'Seaside', 'Williston Park'];
 
 const fishText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.';
-
 
 // funcs
 
@@ -92,4 +89,4 @@ const generatePoint = () => {
 
 const generatePointList = () => [...new Array(COUNT)].map(() => generatePoint());
 
-export {generatePointList};
+export {generatePointList, getDescription, getPhotos};

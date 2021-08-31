@@ -1,6 +1,7 @@
 import SmartView from '../mvp/smart-view.js';
-import {getIconSrc, getTypeLabel, getOffersByType} from '../services/point-helper.js';
-import { getRandomPositiveInt } from '../services/utils.js';
+import {getIconSrc, getTypeLabel, getOffersByType, DESTINATIONS} from '../services/point-helper.js';
+import { getRandomPositiveInt, debounce } from '../services/utils.js';
+import { getDescription, getPhotos } from '../services/generator.js';
 
 
 const renderEventTypeList = (type) => {
@@ -63,6 +64,18 @@ const renderOffersSection = (offers) => {
   `;
 };
 
+const getDestionactionDataList = () => {
+  const html = [];
+
+  html.push('<datalist id="destination-list-1">');
+  DESTINATIONS.forEach((dest) => {
+    html.push(`<option value="${dest}"></option>`);
+  });
+  html.push('</datalist>');
+
+  return html.join('\n');
+};
+
 const getPointEditTemplate = (data) =>/*html*/`
   <li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -81,11 +94,7 @@ const getPointEditTemplate = (data) =>/*html*/`
             ${data.type}
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${data.destination}" list="destination-list-1">
-          <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="${data.destination}"></option>
-          </datalist>
+          ${getDestionactionDataList()}
         </div>
 
         <div class="event__field-group  event__field-group--time">
@@ -134,22 +143,30 @@ export default class PointEdit extends SmartView {
 
     this._formChangeHandler = this._formChangeHandler.bind(this);
     this._changeTypeHandler = this._changeTypeHandler.bind(this);
+    this._changeDestinationHandler = this._changeDestinationHandler.bind(this);
 
+    this._changeDestinationHandler = debounce(this._changeDestinationHandler);
 
     this._innerHandlers = {
-      'event-type' : this._changeTypeHandler,
+      'event-type': this._changeTypeHandler,
+      'event-destination': this._changeDestinationHandler,
     };
 
     this.restoreHandlers();
   }
 
-  restoreHandlers(withOuterHandlers = false) {
+  restoreHandlers(hasHandler = false) {
     this
       .getElement()
       .querySelector('.event--edit')
       .addEventListener('change', this._formChangeHandler);
 
-    if( withOuterHandlers ) {
+    this
+      .getElement()
+      .querySelector('.event__input--destination')
+      .addEventListener('input', this._formChangeHandler);
+
+    if( hasHandler ) {
       this.setToggleClickHandler(this._callback.toggle);
     }
   }
@@ -176,7 +193,7 @@ export default class PointEdit extends SmartView {
 
     let needToRestoreHandlers = false;
 
-    const name = evt.target.getAttribute('name');
+    const name = evt.target.name;
 
     if( name in this._innerHandlers ) {
       needToRestoreHandlers = this._innerHandlers[name](evt);
@@ -216,6 +233,23 @@ export default class PointEdit extends SmartView {
     }
 
     return false;
+  }
+
+  _changeDestinationHandler(evt) {
+
+    const input = evt.target;
+
+    if( input.value === this._data.destination || !DESTINATIONS.includes(input.value) ) {
+      return false;
+    }
+
+    this.updateData({
+      destination: input.value,
+      description: getDescription(),
+      photos: getPhotos(),
+    });
+
+    return true;
   }
 
 }

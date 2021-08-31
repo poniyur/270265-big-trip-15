@@ -1,4 +1,4 @@
-const typeIconSrcLink = {
+const TYPE_ICON_SRC = {
   'sightseeing': 'img/icons/sightseeing.png',
   'taxi': 'img/icons/taxi.png',
   'flight': 'img/icons/flight.png',
@@ -12,7 +12,7 @@ const typeIconSrcLink = {
   'transport': 'img/icons/transport.png',
 };
 
-const typeNames = {
+const TYPE_NAMES = {
   'sightseeing': 'Sightseeing',
   'taxi': 'Taxi',
   'flight': 'Flight',
@@ -38,9 +38,12 @@ const OFFER_TYPES = {
   'restaurant': ['Cook with Gordon Ramsi', 'Dine on the veranda', 'Offer 3', 'Offer 4'],
 };
 
-const getIconSrc = (type) => typeIconSrcLink[type];
+const DESTINATIONS = ['Harrington Park', 'Atmore', 'Halsey', 'Bylas', 'North Mankato', 'Newburyport', 'Juliaetta', 'Oketo', 'Luray', 'Sailor Springs', 'Teton Village', 'Ponemah', 'Arden', 'Minorca', 'Boulder', 'Little Valley', 'Candlewood Lake', 'Grand Coteau', 'Tupelo', 'Wiggins', 'Marlette', 'Riverland', 'Haiku', 'Fleetwood', 'Joy', 'Judson', 'Belen', 'Weigelstown', 'New Braunfels', 'Neck City', 'Port Vincent', 'Ellisburg', 'Onida', 'Baumstown', 'Huguley', 'Jenkinsburg', 'Roseboro', 'Obion', 'Missouri City', 'Marco Island', 'Hope', 'Smithers', 'Highland Heights', 'Salt Creek', 'Baidland', 'Gulf Park Estates', 'Oakes', 'Greenland', 'Seaside', 'Williston Park'];
+const TRIP_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-const getTypeLabel = (type) => typeNames[type];
+const getIconSrc = (type) => TYPE_ICON_SRC[type];
+
+const getTypeLabel = (type) => TYPE_NAMES[type];
 
 const getOffersByType = (type) => OFFER_TYPES[type];
 
@@ -48,4 +51,4 @@ const getOffersByType = (type) => OFFER_TYPES[type];
 Возможно сюда засуну методы для рабоыт с датами
 */
 
-export {getIconSrc, getTypeLabel, getOffersByType};
+export {getIconSrc, getTypeLabel, getOffersByType, DESTINATIONS, TRIP_TYPES};
