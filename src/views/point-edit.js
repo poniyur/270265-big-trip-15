@@ -76,6 +76,21 @@ const getDestionactionDataList = () => {
   return html.join('\n');
 };
 
+const getPhotosHtml = (photos) => {
+  const html = [];
+
+  html.push(`<div class="event__photos-container">
+  <div class="event__photos-tape">`);
+
+  photos.forEach((src) => {
+    html.push(`<img class="event__photo" src="${src}" alt="Event photo">`);
+  });
+
+  html.push('</div></div>');
+
+  return html.join('\n');
+};
+
 const getPointEditTemplate = (data) =>/*html*/`
   <li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -128,6 +143,8 @@ const getPointEditTemplate = (data) =>/*html*/`
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${data.description}</p>
+
+          ${getPhotosHtml(data.photos)}
         </section>
       </section>
     </form>
