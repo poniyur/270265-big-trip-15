@@ -1,8 +1,8 @@
-import TripInfoView from '../views/trip-info.js';
-import FilterView from '../views/filter.js';
-import NavigationView from '../views/navigation.js';
-import SortView from '../views/sort.js';
-import PointListView from '../views/point-list.js';
+import TripInfoView from '../view/trip-info.js';
+import FilterView from '../view/filter.js';
+import NavigationView from '../view/navigation.js';
+import SortView from '../view/sort.js';
+import PointListView from '../view/point-list.js';
 import PointPresenter from './point.js';
 
 import {render, RenderPosition} from '../services/render.js';
@@ -10,14 +10,14 @@ import {render, RenderPosition} from '../services/render.js';
 export default class Trip {
 
   constructor(options) {
-    this._pointMap = options.points.reduce((acc, point) => acc.set(point.id, point), new Map());
+    this._pointsModel = options.pointsModel;
     this._headerContainer = options.headerContainer;
     this._navigationContainer = this._headerContainer.querySelector('.trip-controls__navigation');
     this._filterContainer = this._headerContainer.querySelector('.trip-controls__filters');
 
     this._bodyContainer = options.bodyContainer;
 
-    this._infoComponent = new TripInfoView(Array.from(this._pointMap.values()));
+    this._infoComponent = new TripInfoView(this._getPoints());
     this._navigationComponent = new NavigationView();
     this._filterComponent = new FilterView();
     this._sortComponent = new SortView();
@@ -34,8 +34,12 @@ export default class Trip {
     this._renderMain();
   }
 
+  _getPoints() {
+    return this._pointsModel.get();
+  }
+
   _handlePointChange(updatedPoint) {
-    this._pointMap.set(updatedPoint.id, updatedPoint);
+    this._pointMap.set(updatedPoint.id, updatedPoint); // TODO СУКА
     this._pointPresenterMap.get(updatedPoint.id).run();
   }
 
@@ -61,7 +65,7 @@ export default class Trip {
 
   _renderPointList() {
     render( this._bodyContainer, this._pointListComponent, RenderPosition.BEFOREEND );
-    this._pointMap.forEach((point) => {
+    this._getPoints().forEach((point) => {
       this._renderPoint(point);
     });
   }
