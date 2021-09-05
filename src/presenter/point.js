@@ -1,7 +1,7 @@
 import PointView from '../view/point.js';
 import PointEditView from '../view/point-edit.js';
 
-import {render, replace, RenderPosition, remove} from '../services/render.js';
+import {render, replace, RenderPosition, remove} from '../service/render.js';
 
 
 const STATE = {

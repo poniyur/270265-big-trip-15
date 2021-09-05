@@ -1,7 +1,7 @@
 import SmartView from '../mvp/smart-view.js';
-import {getIconSrc, getTypeLabel, getOffersByType, DESTINATIONS} from '../services/point-helper.js';
-import { getRandomPositiveInt, debounce } from '../services/utils.js';
-import { getDescription, getPhotos } from '../services/generator.js';
+import {getIconSrc, getTypeLabel, getOffersByType, DESTINATIONS} from '../service/point-helper.js';
+import { getRandomPositiveInt, debounce } from '../service/utils.js';
+import { getDescription, getPhotos } from '../service/generator.js';
 
 
 const renderEventTypeList = (type) => {

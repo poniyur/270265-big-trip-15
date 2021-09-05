@@ -5,7 +5,7 @@ import SortView from '../view/sort.js';
 import PointListView from '../view/point-list.js';
 import PointPresenter from './point.js';
 
-import {render, RenderPosition} from '../services/render.js';
+import {render, RenderPosition} from '../service/render.js';
 
 export default class Trip {
 

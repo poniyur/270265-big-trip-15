@@ -1,4 +1,4 @@
-import { createElement } from '../services/render.js';
+import { createElement } from '../service/render.js';
 
 export default class View {
   constructor() {

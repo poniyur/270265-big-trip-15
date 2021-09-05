@@ -1,4 +1,4 @@
-import {getIconSrc} from '../services/point-helper.js';
+import {getIconSrc} from '../service/point-helper.js';
 import View from '../mvp/view.js';
 
 const getViewTime = (dayjsDate) => {

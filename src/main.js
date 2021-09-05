@@ -1,12 +1,12 @@
-import { generatePointList } from './services/generator.js';
+import { generatePointList } from './service/generator.js';
 
-import TripPresenter from './presenters/trip.js';
+import TripPresenter from './presenter/trip.js';
 import Points from './model/points.js';
 
 
 const points = generatePointList();
 
-const pointsModel = new Points;
+const pointsModel = new Points();
 pointsModel.set(points);
 
 const tripPresenter = new TripPresenter({
